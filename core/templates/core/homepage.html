@@ -3,26 +3,77 @@
 <!-- Homepage content -->
 
 {% block content %}
-<!-- CARD question -->
+<!-- SEARCH FORM and FILTER -->
+<div class="mt-2 px-4">
+  <form method="get" action="." class="max-w-md mx-auto">
+    <div class="relative">
+      <input
+        type="search"
+        name="search"
+        id="default-search"
+        class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Search"
+        required
+      />
+      <button
+        type="submit"
+        class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        <svg
+          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 20 20"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+          />
+        </svg>
+      </button>
+    </div>
+  </form>
+  <div
+    class="w-full mx-auto block p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+  >
+    <ul class="flex flex-wrap space-x-2">
+      <li
+        class="rounded-lg hover:bg-blue-700 px-4 py-2 {%if not active_topic %} bg-blue-700 {% endif %}"
+      >
+        <a href="{% url 'home'%}">All Topics</a>
+      </li>
+      {% for topic in topics %}
+      <li
+        class="rounded-lg hover:bg-blue-700 px-4 py-2 {% if topic.name == active_topic %} bg-blue-700 {% endif %}"
+      >
+        <a href="{% url 'home'%}?topic={{topic.name}}">{{ topic.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<!-- END SEARCH FORM & FILTER -->
+
+<!-- QUESTION CARD SECTION-->
 <div class="p-4">
+  <!-- QUESTION CARD -->
+  {% for question in questions %}
   <div
     class="max-w-xlg p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-2"
   >
-    <!-- <div class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"></div> -->
-
     <h5
       class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
     >
-      Qustion Header
+      {{ question.header }}
     </h5>
 
     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Alias harum vel
-      ut quo illum sunt aperiam. Quas, molestias. Optio, sunt dolores nihil
-      voluptatum explicabo saepe expedita aliquid asperiores hic omnis officiis
-      voluptates, dicta cupiditate nulla repellendus! Accusamus ipsa ullam
-      obcaecati enim animi vitae eveniet magnam architecto. Minima cumque
-      provident officia!
+      {{ question.description }}
     </p>
     <a
       href="#"
@@ -46,6 +97,8 @@
       </svg>
     </a>
   </div>
+  {% endfor %}
+  <!-- END CARD -->
 </div>
-<!-- END CARD -->
+<!-- END CARD SECTION -->
 {% endblock %}
