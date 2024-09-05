@@ -28,3 +28,10 @@ def home(request: HttpRequest) -> HttpResponse:
         template_name="core/homepage.html",
         context=context,
     )
+
+
+def signup(request: HttpRequest) -> HttpResponse:
+    return render(
+        request=request,
+        template_name="core/signup.html",
+    )
