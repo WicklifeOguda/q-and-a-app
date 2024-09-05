@@ -35,3 +35,10 @@ def signup(request: HttpRequest) -> HttpResponse:
         request=request,
         template_name="core/signup.html",
     )
+
+
+def login(request: HttpRequest) -> HttpResponse:
+    return render(
+        request=request,
+        template_name="core/login.html",
+    )
