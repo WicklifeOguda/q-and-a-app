@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from quiz.models import Topic, Question
 from django.db.models import Q
 from django.http import HttpResponse, HttpRequest
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
 from core.forms import SignUpForm
 
 
@@ -58,7 +59,22 @@ def user_logout(request: HttpRequest) -> HttpResponse:
 
 
 def user_login(request: HttpRequest) -> HttpResponse:
+    if not request.method == "POST":
+        return render(
+            request=request,
+            template_name="core/login.html",
+        )
+
+    username = request.POST.get("username")
+    password = request.POST.get("password")
+    user = authenticate(request=request, username=username, password=password)
+
+    if user is not None:
+        login(request=request, user=user)
+        return redirect("/")
+
     return render(
         request=request,
         template_name="core/login.html",
+        context={"login_error": "Invalid username or password"},
     )
