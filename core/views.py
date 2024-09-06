@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from quiz.models import Topic, Question
 from django.db.models import Q
 from django.http import HttpResponse, HttpRequest
+from django.contrib.auth import login
+from core.forms import SignUpForm
 
 
 def home(request: HttpRequest) -> HttpResponse:
@@ -31,13 +33,26 @@ def home(request: HttpRequest) -> HttpResponse:
 
 
 def signup(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+
+            login(request, user)
+
+            return redirect("/")
+    else:
+        form = SignUpForm()
+
     return render(
         request=request,
         template_name="core/signup.html",
+        context={"form": form},
     )
 
 
-def login(request: HttpRequest) -> HttpResponse:
+def user_login(request: HttpRequest) -> HttpResponse:
     return render(
         request=request,
         template_name="core/login.html",
